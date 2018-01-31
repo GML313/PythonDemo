@@ -6,9 +6,11 @@ import requests
 import Queue
 import threading
 import sys
+from selenium import webdriver
+import time
 
-headers = {'User_Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36',
-           'referer':'https://image.baidu.com'
+#'referer':'https://image.baidu.com'
+headers = {'User_Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
            }
 class baidusipder(threading.Thread):
     def __init__(self,queue):
@@ -27,21 +29,35 @@ class baidusipder(threading.Thread):
 
     def get_url(self,url):
         r = requests.get(url=url,headers=headers)
-        print r.content
+        #print r.headers,r.content
         soup = bs(r.content,"html.parser")
         #注意使用find_all()方法返回的类型为<class 'bs4.element.ResultSet'>，而使用find返回的是<class 'bs4.element.Tag'>；前者是类似于list的数据结构，
         #索引只能是整数，而后者可以直接使用标签的字符串获得指定内容
         url = soup.find_all(name='div',attrs={'class':'s_tab'})[0].find(name='a',attrs={'href':re.compile(r"http://image.baidu.com/*")})
         url_img = url['href']
         print url_img
-        r2 = requests.get(url=url_img,headers=headers)
-        soup2 = bs(r2.content,"html.parser")
-        url_img_total = soup2.find_all(name='div',attrs={'class':'imgpage'}) #.find_all(name='li',attrs={'class':'imgitem'})
-        print url_img_total
-        with open('./text.txt','w') as f:
-            f.write(url['href']+'\n')
-            f.close() #为了方便多线程读写
 
+        #driver = webdriver.Firefox()
+        driver = webdriver.PhantomJS(executable_path=r'/usr/local/Cellar/phantomjs/bin/phantomjs')
+        driver.get(url_img)
+        soup = bs(driver.page_source,'lxml') #注意不同的解析器，可能会页面不同，这个有待进一步尝试
+        driver_page = soup.find_all(name='li',attrs={'class':'imgitem'})
+        url_subimg = []
+        for i in range(0,len(driver_page)):
+            #print driver_page[i]
+            print driver_page[i]['data-objurl']
+            url_subimg.append(driver_page[i]['data-objurl']+'\n')
+        with open('./text.txt', 'w') as f:
+            for i in url_subimg:
+                f.write(i)
+            f.close()  # 为了方便多线程读写
+
+    """
+    def proxy_test(self):
+        proxy_url = requests.get(url='http://www.site-digger.com/html/articles/20110516/proxieslist.html',headers=headers)
+        try:
+            GetProxy =
+    """
 def main():
     f =open('./text.txt','w')
     f.close()
