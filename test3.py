@@ -6,30 +6,32 @@ import pymysql.cursors
 import requests
 import json
 
-# url = 'https://en.wikipedia.org/wiki/Main_Page'
-# request = urllib2.Request(url)
-# resp = urllib2.urlopen(request)
-# #print resp.info()
-# soup = BeautifulSoup(resp,"html.parser")#使用解析器解析HTML(BS默认有三种解析器)，不同的解析器会获得不同结构的树形文档
-# #默认输出编码方式为UTF-8
-# listUrls = soup.findAll("a",href=re.compile("^/wiki/"))
-# for url in listUrls:
-#     if not re.search(r"\.(jpg|JPG|png)$",url["href"]):
-#         print url.get_text(), "<---->", "https://en.wikipedia.org"+url["href"]
-#         connection = pymysql.connect(host='localhost',
-#                                      user='root',
-#                                      password='Gml_2018',
-#                                      db='wikiurl',
-#                                      charset='utf8mb4')
-#         try:
-#             with connection.cursor() as cursor:
-#                 #sql = "insert into `urls`(`urlname`,`urlhref`)values(%s,%s)"
-#                 #cursor.execute(sql, (url.get_text(), "https://en.wikipedia.org" + url["href"]))
-#                 sql = "select * from urls"
-#                 cursor.execute(sql)
-#                 #connection.commit()
-#         finally:
-#             connection.close()
+"""
+url = 'https://en.wikipedia.org/wiki/Main_Page'
+request = urllib2.Request(url)
+resp = urllib2.urlopen(request)
+#print resp.info()
+soup = BeautifulSoup(resp,"html.parser")#使用解析器解析HTML(BS默认有三种解析器)，不同的解析器会获得不同结构的树形文档
+#默认输出编码方式为UTF-8
+listUrls = soup.findAll("a",href=re.compile("^/wiki/"))
+for url in listUrls:
+    if not re.search(r"\.(jpg|JPG|png)$",url["href"]):
+        print url.get_text(), "<---->", "https://en.wikipedia.org"+url["href"]
+        connection = pymysql.connect(host='localhost',
+                                     user='root',
+                                     password='Gml_2018',
+                                     db='wikiurl',
+                                     charset='utf8mb4')
+        try:
+            with connection.cursor() as cursor:
+                #sql = "insert into `urls`(`urlname`,`urlhref`)values(%s,%s)"
+                #cursor.execute(sql, (url.get_text(), "https://en.wikipedia.org" + url["href"]))
+                sql = "select * from urls"
+                cursor.execute(sql)
+                #connection.commit()
+        finally:
+            connection.close()
+"""
 def download_image():
     url = 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3849388262,3599136548&fm=27&gp=0.jpg'
     headers = {'User_Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'}
@@ -99,19 +101,20 @@ if __name__ == '__main__':
     print text
     print json.loads(text)
 
-#user
-# user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
-# headers = {'User_Agent':user_agent}
-# values = {'wd':'D_in'}
-# data = urllib.urlencode(values)
-# request = urllib2.Request(url,data,headers)
-# response = urllib2.urlopen(request)
-# page = response.read()
-# url2 = url + '?' + data
-# #for k, v in response.getheaders():
-#    print('%s: %s' % (k, v))
-#print('Data:', data.decode('utf-8'))
-
+"""
+user
+user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
+headers = {'User_Agent':user_agent}
+values = {'wd':'D_in'}
+data = urllib.urlencode(values)
+request = urllib2.Request(url,data,headers)
+response = urllib2.urlopen(request)
+page = response.read()
+url2 = url + '?' + data
+#for k, v in response.getheaders():
+   print('%s: %s' % (k, v))
+print('Data:', data.decode('utf-8'))
+"""
 # str = '16_7@163.com'
 # pa = re.compile(r'^\w{0,19}@163.(com|cn|net|org){1,3}$')
 # print re.search(pa,str).group()

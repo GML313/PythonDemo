@@ -1,4 +1,6 @@
 #coding:utf-8
+import re
+import random
 class Solution(object):
     def twoSum(self,nums,target):
         for i in range(nums.__len__()):
@@ -32,8 +34,23 @@ class Solution(object):
             while s[i] <= h and i < j: i += 1
             while s[j] <= h and i < j: j -= 1
         return water
+    def test(self):
+        pattern = re.compile(r'\d{2,3}.\d{1,3}.\d{1,3}.\d{1,3}:\d{1,5}')
+        result =  re.search(pattern,'192.13.2.90:9000')
+        print type(result),result.group()
+        tmp = None
+        if not tmp : print 123;
+        else: print 'None'
+        open_proxy = open('proxy_url.txt','r')
+        proxy_tmp = open_proxy.readlines()
+        open_proxy.close()
+        one_proxy = random.choice(proxy_tmp)
+        proxies = {"http:": ('http://' + one_proxy).replace("\n","")}
+        print proxies
+
 if __name__ == "__main__":
     test1 = Solution()
     #print test1.twoSum([3,2,4],6)
     print test1.reverse(1563847412)
     print test1.maxArea([1,2,4,2,3])
+    test1.test()
